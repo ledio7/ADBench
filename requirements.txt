@@ -9,5 +9,5 @@ matplotlib==3.4.3
 numpy
 tqdm==4.61.2
 streamad==0.3.0
--e ./Packages/river
--e ./Packages/IncrementalTorch
+-e ./Utils/river
+-e ./Utils/IncrementalTorch
