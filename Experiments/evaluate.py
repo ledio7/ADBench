@@ -8,11 +8,11 @@ from IncrementalTorch.anomaly import *
 from IncrementalTorch.base import AutoencoderBase
 from IncrementalTorch.datasets import MNIST, Covertype, Shuttle
 from river.anomaly import *
-from river.datasets import HTTP, SMTP, CreditCard
+from river.datasets import HTTP, SMTP, CreditCard, Satimage
 from river.preprocessing import AdaptiveStandardScaler, MinMaxScaler, Normalizer
 from river.feature_extraction import RBFSampler
 import torch
-from satimage import Satimage
+# from satimage import Satimage
 from streamad.model import LodaDetector
 from time import time
 # from tqdm import tqdm

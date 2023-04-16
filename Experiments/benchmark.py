@@ -56,7 +56,7 @@ if __name__ == '__main__':
     metrics_agg = aggregate_dataframe(metrics_raw, ["dataset", "model"])
 
     path = pathlib.Path(__file__).parent.parent.resolve()
-    metrics_raw.to_csv(f"{path}\\Experiments\\Results\\{SAVE_STR}_raw.csv")
-    metrics_agg.to_csv(f"{path}\\Experiments\\Results\\{SAVE_STR}.csv")
+    metrics_raw.to_csv(f"{path}/Experiments/Results/{SAVE_STR}_raw.csv")
+    metrics_agg.to_csv(f"{path}/Experiments/Results/{SAVE_STR}.csv")
 
 
