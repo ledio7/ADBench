@@ -11,6 +11,8 @@ Python requirement for this project:
 
 `git clone https://github.com/ledio7/simple_benchmark.git`
 
+`cd simple_benchmark`
+
 `python3 -m venv bench`
 
 `source bench/bin/activate`
