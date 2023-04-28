@@ -3,18 +3,18 @@ import multiprocessing as mp
 import pathlib
 from evaluate import aggregate_dataframe, test_then_train
 from tqdm import tqdm
+import os
 
 N_PROCESSES = 6
-DATASETS = ["covertype", "creditcard", "shuttle", "satimage-2", "smtp", "http"]
+DATASETS = ["covertype", "creditcard", "shuttle", "satimage-2"]
 # DATASETS = ["creditcard", "satimage-2", "shuttle"]
 # MODELS = ["AE", "HST", "LODA"]
-MODELS = ["AE", "DAE", "PW-AE", "RRCF", "HST", "xStream", "ILOF", "LODA"]
+# MODELS = ["AE", "DAE", "PW-AE", "RRCF", "HST", "xStream", "ILOF", "LODA"]
+MODELS = ["AE"]
 SEEDS = range(42, 44)
 
 # SUBSAMPLE = 500_000
-SUBSAMPLE = 3001
-
-SAVE_STR = "Benchmark"
+SUBSAMPLE = 10000
 
 CONFIGS = {
     "AE": {"lr": 0.02, "latent_dim": 0.1},
@@ -56,7 +56,12 @@ if __name__ == '__main__':
     metrics_agg = aggregate_dataframe(metrics_raw, ["dataset", "model"])
 
     path = pathlib.Path(__file__).parent.parent.resolve()
-    metrics_raw.to_csv(f"{path}/Experiments/Results/{SAVE_STR}_raw.csv")
-    metrics_agg.to_csv(f"{path}/Experiments/Results/{SAVE_STR}.csv")
 
+    # to_raw = os.path.join('Experiments', 'Results', 'Benchmark_raw.csv')
+    path_raw = path.joinpath(os.path.join('Experiments', 'Results', 'Benchmark_raw.csv'))
 
+    # to_aggregate = os.path.join('Experiments', 'Results', 'Benchmark_agg.csv')
+    path_agg = path.joinpath(os.path.join('Experiments', 'Results', 'Benchmark_agg.csv'))
+
+    metrics_raw.to_csv(path_raw)
+    metrics_agg.to_csv(path_agg)

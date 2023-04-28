@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.metrics import roc_curve, precision_recall_curve, auc, f1_score, confusion_matrix, recall_score
 from river import base
+import math
 
 threshold= None
 f1_recall = None
@@ -85,5 +86,9 @@ def compute_metrics(labels, scores, metrics=METRICS):
 
     for name, metric in metrics.items():
         result[name] = metric(labels, scores, threshold, f1_recall)
+
+    for key in result:
+        if math.isnan(result[key]):
+            result[key] = 0
 
     return result
