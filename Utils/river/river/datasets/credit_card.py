@@ -3,7 +3,7 @@ from river import stream
 from . import base
 
 
-class CreditCard(base.RemoteDataset):
+class CreditCard(base.FileDataset):
     """Credit card frauds.
 
     The datasets contains transactions made by credit cards in September 2013 by european
@@ -38,12 +38,12 @@ class CreditCard(base.RemoteDataset):
             n_samples=284_807,
             n_features=30,
             task=base.BINARY_CLF,
-            url="https://maxhalford.github.io/files/datasets/creditcardfraud.zip",
-            size=150_828_752,
-            filename="creditcard.csv",
+            # url="https://maxhalford.github.io/files/datasets/creditcardfraud.zip",
+            # size=150_828_752,
+            filename="creditcard.zip",
         )
 
-    def _iter(self):
+    def __iter__(self):
 
         converters = {f"V{i}": float for i in range(1, 29)}
         converters["Class"] = int

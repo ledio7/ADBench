@@ -12,10 +12,10 @@ from river.datasets import HTTP, SMTP, CreditCard, Satimage
 from river.preprocessing import AdaptiveStandardScaler, MinMaxScaler, Normalizer
 from river.feature_extraction import RBFSampler
 import torch
-# from satimage import Satimage
+
 from streamad.model import LodaDetector
 from time import time
-# from tqdm import tqdm
+
 from metrics import compute_metrics
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -145,10 +145,7 @@ def test_then_train(
 
     metrics["status"] = "Completed"
     metrics.update(func_kwargs)
-    # if isinstance(model, MODELS["LODA"]):
-    #     print(f"LODA, {dataset}, {seed}, Done")
-    # else:
-    #     print(f"{model}, {dataset}, {seed}, Done")
+    
     return metrics, scores
 
 

@@ -2,19 +2,20 @@ import pandas as pd
 import multiprocessing as mp
 import pathlib
 from evaluate import aggregate_dataframe, test_then_train
+from plots import create_plots
 from tqdm import tqdm
 import os
 
 N_PROCESSES = 6
-DATASETS = ["covertype", "creditcard", "shuttle", "satimage-2"]
+DATASETS = ["covertype", "creditcard", "shuttle", "satimage-2", "smtp", "http"]
 # DATASETS = ["creditcard", "satimage-2", "shuttle"]
 # MODELS = ["AE", "HST", "LODA"]
-# MODELS = ["AE", "DAE", "PW-AE", "RRCF", "HST", "xStream", "ILOF", "LODA"]
-MODELS = ["AE"]
-SEEDS = range(42, 44)
+MODELS = ["AE", "DAE", "PW-AE", "RRCF", "HST", "xStream", "ILOF", "LODA"]
+# MODELS = ["AE", "DAE", "PW-AE"]
+SEEDS = range(42, 47)
 
-# SUBSAMPLE = 500_000
-SUBSAMPLE = 10000
+SUBSAMPLE = 600_000
+# SUBSAMPLE = 10000
 
 CONFIGS = {
     "AE": {"lr": 0.02, "latent_dim": 0.1},
@@ -65,3 +66,6 @@ if __name__ == '__main__':
 
     metrics_raw.to_csv(path_raw)
     metrics_agg.to_csv(path_agg)
+
+    create_plots(metrics_agg)
+
