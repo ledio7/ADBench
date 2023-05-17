@@ -5,7 +5,7 @@ from evaluate import aggregate_dataframe, test_then_train
 from main_plots import create_main_plots, create_curves
 from tqdm import tqdm
 import os
-# import sys
+import sys
 # sys.setrecursionlimit(100_000)
 
 N_PROCESSES = 6
@@ -18,8 +18,13 @@ MODELS = ["AE", "DAE", "PW-AE", "RRCF", "HST", "xStream", "ILOF", "LODA"]
 # MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream"]
 SEEDS = range(42, 47)
 
-SUBSAMPLE = 600_000
-# SUBSAMPLE = 10000
+if len(sys.argv) < 2:
+        SUBSAMPLE=600_000
+else: 
+        SUBSAMPLE = sys.argv[1]
+
+# SUBSAMPLE = 600_000
+
 
 CONFIGS = {
     "AE": {"lr": 0.02, "latent_dim": 0.1},
