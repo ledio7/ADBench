@@ -8,5 +8,7 @@ matplotlib==3.4.3
 numpy
 tqdm==4.61.2
 streamad==0.3.0
+orange3==3.30
+seaborn
 -e ./Utils/river
 -e ./Utils/IncrementalTorch

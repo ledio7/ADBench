@@ -2,35 +2,45 @@ import os
 import random
 import sys
 import warnings
-from river.anomaly.rs_hash import RSHash
 import numpy as np
 from IncrementalTorch.anomaly import *
 from IncrementalTorch.base import AutoencoderBase
-from IncrementalTorch.datasets import MNIST, Covertype, Shuttle
+from IncrementalTorch.datasets import Covertype, Shuttle
 from river.anomaly import *
-from river.datasets import HTTP, SMTP, CreditCard, Satimage
+from river.datasets import *
 from river.preprocessing import AdaptiveStandardScaler, MinMaxScaler, Normalizer
 from river.feature_extraction import RBFSampler
 import torch
-
 from streamad.model import LodaDetector
 from time import time
 
-from metrics import compute_metrics
+from metrics import compute_metrics, compute_rates
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(script_dir))
-
 
 
 DATASETS = {
     "covertype": Covertype,
     "creditcard": CreditCard,
     "shuttle": Shuttle,
-    "mnist": MNIST,
     "smtp": SMTP,
     "http": HTTP,
     "satimage-2": Satimage,
+    "annthyroid": Annthyroid,
+    "letter": Letter,
+    "mammography": Mammography,
+    "musk": Musk,
+    "optdigits": Optdigits,
+    "pendigits": Pendigits,
+    "thyroid": Thyroid,
+    "vowels": Vowels,
+    "cardio": Cardio,
+    "mnist": Mnist,
+    "speech": Speech,
+    "wbc": Wbc,
+    "breastw": Breastw,
+    "arrhythmia": Arrhythmia,
 }
 
 PREPROCESSORS = {
@@ -54,7 +64,6 @@ MODELS = {
     "OC-SVM": OneClassSVM,
     "HST": HalfSpaceTrees,
     "VAE": VariationalAutoencoder,
-    "rshash": RSHash,
     "LODA": LodaDetector
 }
 
@@ -114,7 +123,7 @@ def test_then_train(
 
     scores, labels = [], []
     start = time()
-    # for idx, (x, y) in enumerate(tqdm(data)):
+
     for idx, (x, y) in enumerate(data):
         # Preprocess input
         if _preprocessor:
@@ -141,12 +150,14 @@ def test_then_train(
     total_time += time() - start
 
     metrics = compute_metrics(labels, scores)
-    metrics["runtime"] = total_time
 
+    fpr, tpr, recall, precision = compute_rates(labels, scores)
+
+    metrics["runtime"] = total_time
     metrics["status"] = "Completed"
     metrics.update(func_kwargs)
-    
-    return metrics, scores
+
+    return metrics, (model, dataset, fpr, tpr, seed), (model, dataset, recall, precision, seed)
 
 
 def aggregate_dataframe(df, variables):
@@ -162,5 +173,4 @@ def seed_everything(seed):
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
-
 

@@ -6,52 +6,42 @@ the data in a stream fashion. All datasets have fixed size. Please refer to `riv
 are interested in infinite synthetic data generators.
 
 """
-from .airline_passengers import AirlinePassengers
-from .bananas import Bananas
-from .bikes import Bikes
-from .chick_weights import ChickWeights
+from .annthyroid import Annthyroid
+from .arrhythmia import Arrhythmia
+from .breastw import Breastw
+from .cardio import Cardio
 from .credit_card import CreditCard
-from .elec2 import Elec2
-from .higgs import Higgs
 from .http import HTTP
-from .insects import Insects
-from .keystroke import Keystroke
-from .malicious_url import MaliciousURL
-from .movielens100k import MovieLens100K
-from .music import Music
-from .phishing import Phishing
-from .restaurants import Restaurants
-from .segment import ImageSegments
+from .letter import Letter
+from .mammography import Mammography
+from .mnist import Mnist
+from .musk import Musk
+from .optdigits import Optdigits
+from .pendigits import Pendigits
 from .satimage import Satimage
-from .sms_spam import SMSSpam
 from .smtp import SMTP
-from .solar_flare import SolarFlare
-from .taxis import Taxis
-from .trec07 import TREC07
-from .trump_approval import TrumpApproval
+from .speech import Speech
+from .thyroid import Thyroid
+from .vowels import Vowels
+from .wbc import Wbc
 
 __all__ = [
-    "AirlinePassengers",
-    "Bananas",
-    "Bikes",
-    "ChickWeights",
+    "Annthyroid",
+    "Arrhythmia",
+    "Breastw",
+    "Cardio",
     "CreditCard",
-    "Elec2",
-    "Higgs",
     "HTTP",
-    "ImageSegments",
-    "Insects",
-    "Keystroke",
-    "MaliciousURL",
-    "MovieLens100K",
-    "Music",
-    "Phishing",
-    "Restaurants",
+    "Letter",
+    "Mammography",
+    "Mnist",
+    "Musk",
+    "Optdigits",
+    "Pendigits",
     "Satimage",
-    "SMSSpam",
     "SMTP",
-    "SolarFlare",
-    "Taxis",
-    "TREC07",
-    "TrumpApproval",
+    "Speech",
+    "Thyroid",
+    "Vowels",
+    "Wbc",
 ]

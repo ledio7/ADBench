@@ -67,6 +67,11 @@ def geo_mean(labels, scores, threshold, f1_recall):
 
     return g_mean
 
+def compute_rates(labels, scores):
+    fpr, tpr, _ = roc_curve(labels, scores)
+    precision, recall, _ = precision_recall_curve(labels, scores)
+    return fpr, tpr, recall, precision
+
 METRICS = {
     "PR-AUC": pr_auc,
     "ROC-AUC": roc_auc,
