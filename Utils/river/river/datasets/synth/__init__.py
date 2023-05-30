@@ -21,6 +21,7 @@ from .sea import SEA
 from .sine import Sine
 from .stagger import STAGGER
 from .waveform import Waveform
+from .make import Make
 
 __all__ = [
     "Agrawal",
@@ -42,4 +43,5 @@ __all__ = [
     "Sine",
     "STAGGER",
     "Waveform",
+    "Make",
 ]
