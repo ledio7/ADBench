@@ -19,10 +19,14 @@ def create_plots(df):
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
 
-        #PR-AUC, ROC-AUC, Geo-Mean, runtime
-        for metric in ['PR-AUC', 'ROC-AUC', 'Geo-Mean', 'runtime']:
+        #PR-AUC, ROC-AUC, Geo-Mean, runtime, Ramhours
+        for metric in ['PR-AUC', 'ROC-AUC', 'Geo-Mean', 'runtime', 'RAMHours']:
             fig = plt.figure()
-            plt.bar(models, df[metric][df['dataset']==dataset], color='green')
+            if metric == 'runtime' or metric == 'RAMHours':
+                plt.bar(models, df[metric][df['dataset']==dataset], color='green')
+                plt.yscale('log')
+            else:
+                plt.bar(models, df[metric][df['dataset']==dataset], color='green')
 
             plt.xlabel('Algorithm')
             plt.ylabel(f'{metric}')

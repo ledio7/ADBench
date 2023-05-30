@@ -2,6 +2,8 @@ import numpy as np
 from sklearn.metrics import roc_curve, precision_recall_curve, auc, f1_score, confusion_matrix, recall_score
 from river import base
 import math
+from collections import deque
+import sys
 
 threshold= None
 f1_recall = None
@@ -68,7 +70,7 @@ def geo_mean(labels, scores, threshold, f1_recall):
     return g_mean
 
 def compute_rates(labels, scores):
-    fpr, tpr, _ = roc_curve(labels, scores)
+    fpr, tpr, _ = roc_curve(labels, scores)###
     precision, recall, _ = precision_recall_curve(labels, scores)
     return fpr, tpr, recall, precision
 
@@ -82,6 +84,52 @@ METRICS = {
     "Geo-Mean": geo_mean,
 }
 
+def calculate_object_size(obj, unit='byte'):
+
+    seen = set()
+    to_visit = deque()
+    byte_size = 0
+
+    to_visit.append(obj)
+
+    while True:
+        try:
+            obj = to_visit.popleft()
+        except IndexError:
+            break
+
+        # If element was already covered, skip it
+        if id(obj) in seen:
+            continue
+
+        # Update size accounting
+        byte_size += sys.getsizeof(obj)
+
+        # Mark element as seen
+        seen.add(id(obj))
+
+        # Add keys and values for size account
+        if isinstance(obj, dict):
+            for v in obj.values():
+                to_visit.append(v)
+
+            for k in obj.keys():
+                to_visit.append(k)
+        elif hasattr(obj, '__dict__'):
+            to_visit.append(obj.__dict__)
+        elif hasattr(obj, '__iter__') and \
+                not isinstance(obj, (str, bytes, bytearray)):
+            for i in obj:
+                to_visit.append(i)
+
+    if unit == 'kB':
+        final_size = byte_size / 1024
+    elif unit == 'MB':
+        final_size = byte_size / (2 ** 20)
+    else:
+        final_size = byte_size
+
+    return final_size
 
 def compute_metrics(labels, scores, metrics=METRICS):
     

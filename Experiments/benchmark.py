@@ -9,13 +9,13 @@ import sys
 # sys.setrecursionlimit(100_000)
 
 N_PROCESSES = 6
-DATASETS = ["covertype", "creditcard", "shuttle", "satimage-2", "smtp", "http"]
+DATASETS = ["arrhythmia", "satimage-2", "musk" ]
 # DATASETS = ["annthyroid", "arrhythmia", "breastw", "cardio", "letter", "mammography", "mnist", "musk", "optdigits", "pendigits", "speech", "thyroid", "vowels", "wbc"]
 # DATASETS = ["satimage-2", "annthyroid", "cardio", "shuttle"]
 
-MODELS = ["AE", "DAE", "PW-AE", "RRCF", "HST", "xStream", "ILOF", "LODA"]
+# MODELS = ["AE", "DAE", "PW-AE", "RRCF", "HST", "xStream", "ILOF", "LODA"]
 # MODELS = ["AE", "DAE", "PW-AE", "HST", "ILOF", "LODA"] #new one
-# MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream"]
+MODELS = ["AE", "DAE", "HST"]
 SEEDS = range(42, 47)
 
 if len(sys.argv) < 2:
@@ -58,12 +58,11 @@ if __name__ == '__main__':
     # metrics = [run.get()[0] for run in runs]
     with tqdm(total=len(runs), desc="Processing") as pbar:
         metrics = []
-        roc_rates = []
-        pr_rates = []
+        rates = []
+        
         for run in runs:
             metrics.append(run.get()[0])
-            roc_rates.append(run.get()[1])
-            pr_rates.append(run.get()[2])
+            rates.append(run.get()[1])
             pbar.update(1)
 
     metrics_raw = pd.DataFrame(metrics)
@@ -79,9 +78,12 @@ if __name__ == '__main__':
 
     metrics_raw.to_csv(path_raw)
     metrics_agg.to_csv(path_agg)
-
+    
     #Create roc e pr curve
-    create_curves(roc_rates, pr_rates)
+    column_names = ['model', 'dataset', 'seed', 'fpr', 'tpr' ]
+    df_rates= pd.DataFrame(rates, columns=column_names)
+    # print(df_rates['tpr'][1])
+    create_curves(df_rates)
 
     #Create main heatmaps
     create_main_plots(metrics_agg)

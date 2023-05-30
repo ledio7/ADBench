@@ -14,7 +14,7 @@ import torch
 from streamad.model import LodaDetector
 from time import time
 
-from metrics import compute_metrics, compute_rates
+from metrics import compute_metrics, compute_rates, calculate_object_size
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(script_dir))
@@ -112,7 +112,6 @@ def test_then_train(
         _preprocessor = None
         warnings.warn(f"Preprocessor '{preprocessor}' could not be found.")
 
-
     # Initialize model
     if isinstance(model, str):
         try:
@@ -123,6 +122,8 @@ def test_then_train(
 
     scores, labels = [], []
     start = time()
+    starting_time=time()
+    RAMhours = 0
 
     for idx, (x, y) in enumerate(data):
         # Preprocess input
@@ -144,8 +145,21 @@ def test_then_train(
             scores.append(score)
             labels.append(y)
         
-        
+        # RAMHours metric
+        if (idx % update_interv == 0 or idx == len(data) - 1) and idx !=0:
 
+            evaluate_time = time()
+            time_increment = evaluate_time - starting_time
+            time_increment = time_increment / 3600
+
+            usage = calculate_object_size(model) / (1024 * 1024 * 1024)
+            
+            RAMhours_increment = usage * time_increment  
+            RAMhours += RAMhours_increment
+
+            starting_time = time()   
+
+    
     # Compute final metric scores
     total_time += time() - start
 
@@ -154,10 +168,11 @@ def test_then_train(
     fpr, tpr, recall, precision = compute_rates(labels, scores)
 
     metrics["runtime"] = total_time
+    metrics["RAMHours"] = RAMhours
     metrics["status"] = "Completed"
     metrics.update(func_kwargs)
 
-    return metrics, (model, dataset, fpr, tpr, seed), (model, dataset, recall, precision, seed)
+    return metrics, (f'{model}', dataset, seed, fpr, tpr)
 
 
 def aggregate_dataframe(df, variables):
