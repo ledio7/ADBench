@@ -36,41 +36,41 @@ final_path  = path.joinpath(os.path.join('Synthetic', 'Data_gen'))
 
 
 DATASETS = {
-    "agra1" : synth.Agrawal(classification_function=5, seed=42, balance_classes=True, perturbation = 0.1 ).take(20000),
-    "agra2" : synth.Agrawal(classification_function=5, seed=43, balance_classes=True, perturbation = 0.1 ).take(100000),
-    "agra3" : synth.Agrawal(classification_function=5, seed=44, balance_classes=True, perturbation = 0.1 ).take(200000),
-    "agra4" : synth.Agrawal(classification_function=5, seed=45, balance_classes=True, perturbation = 0.1 ).take(200000), 
-    "agra5" : synth.Agrawal(classification_function=5, seed=46, balance_classes=True, perturbation = 0.2 ).take(200000),
+    # "agra1" : synth.Agrawal(classification_function=5, seed=42, balance_classes=True, perturbation = 0.1 ).take(20000),
+    # "agra2" : synth.Agrawal(classification_function=5, seed=43, balance_classes=True, perturbation = 0.1 ).take(100000),
+    # "agra3" : synth.Agrawal(classification_function=5, seed=44, balance_classes=True, perturbation = 0.1 ).take(200000),
+    # "agra4" : synth.Agrawal(classification_function=5, seed=45, balance_classes=True, perturbation = 0.1 ).take(200000), 
+    # "agra5" : synth.Agrawal(classification_function=5, seed=46, balance_classes=True, perturbation = 0.2 ).take(200000),
 
-    "agra6" : synth.Agrawal(classification_function=9, seed=47, balance_classes=True, perturbation = 0.1 ).take(20000),   
-    "agra7" : synth.Agrawal(classification_function=9, seed=48, balance_classes=True, perturbation = 0.1 ).take(100000),   
-    "agra8" : synth.Agrawal(classification_function=9, seed=49, balance_classes=True, perturbation = 0.1 ).take(200000),   
-    "agra9" : synth.Agrawal(classification_function=9, seed=50, balance_classes=True, perturbation = 0.1 ).take(200000),   
-    "agra10" : synth.Agrawal(classification_function=9, seed=51, balance_classes=True, perturbation = 0.2 ).take(200000),    
+    # "agra6" : synth.Agrawal(classification_function=9, seed=47, balance_classes=True, perturbation = 0.1 ).take(20000),   
+    # "agra7" : synth.Agrawal(classification_function=9, seed=48, balance_classes=True, perturbation = 0.1 ).take(100000),   
+    # "agra8" : synth.Agrawal(classification_function=9, seed=49, balance_classes=True, perturbation = 0.1 ).take(200000),   
+    # "agra9" : synth.Agrawal(classification_function=9, seed=50, balance_classes=True, perturbation = 0.1 ).take(200000),   
+    # "agra10" : synth.Agrawal(classification_function=9, seed=51, balance_classes=True, perturbation = 0.2 ).take(200000),    
 
     "sine1": synth.AnomalySine(n_samples=10000, n_anomalies=100, replace= False, noise = 0.1, seed = 43),
     "sine2": synth.AnomalySine(n_samples=50000, n_anomalies=200, replace= False, noise = 0.1, seed = 43),
-    "sine3": synth.AnomalySine(n_samples=100000, n_anomalies=800, replace= False, noise = 0.1, seed = 43),
-    "sine4": synth.AnomalySine(n_samples=100000, n_anomalies=1200, replace= False, noise = 0.1, seed = 43),
-    "sine5": synth.AnomalySine(n_samples=100000, n_anomalies=1800, replace= False, noise = 0.1, seed = 43),
+    # "sine3": synth.AnomalySine(n_samples=100000, n_anomalies=800, replace= False, noise = 0.1, seed = 43),
+    # "sine4": synth.AnomalySine(n_samples=100000, n_anomalies=1200, replace= False, noise = 0.1, seed = 43),
+    # "sine5": synth.AnomalySine(n_samples=100000, n_anomalies=1800, replace= False, noise = 0.1, seed = 43),
 
-    "hyper1" : synth.Hyperplane(seed=46, n_features=50, noise_percentage = 0.1).take(10000), 
-    "hyper2" : synth.Hyperplane(seed=46, n_features=100, noise_percentage = 0.1).take(50000), 
-    "hyper3" : synth.Hyperplane(seed=46, n_features=200, noise_percentage = 0.1).take(200000), 
-    "hyper4" : synth.Hyperplane(seed=46, n_features=300, noise_percentage = 0.1).take(200000), 
-    "hyper5" : synth.Hyperplane(seed=46, n_features=400, noise_percentage = 0.1).take(200000), 
+    # "hyper1" : synth.Hyperplane(seed=46, n_features=50, noise_percentage = 0.1).take(10000), 
+    # "hyper2" : synth.Hyperplane(seed=46, n_features=100, noise_percentage = 0.1).take(50000), 
+    # "hyper3" : synth.Hyperplane(seed=46, n_features=200, noise_percentage = 0.1).take(200000), 
+    # "hyper4" : synth.Hyperplane(seed=46, n_features=300, noise_percentage = 0.1).take(200000), 
+    # "hyper5" : synth.Hyperplane(seed=46, n_features=400, noise_percentage = 0.1).take(200000), 
 
-    "tree1" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=50, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(20000),
-    "tree2" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=100, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(100000),
-    "tree3" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=150, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(200000),
-    "tree4" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=200, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(200000),
-    "tree5" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=250, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(200000),
+    # "tree1" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=50, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(20000),
+    # "tree2" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=100, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(100000),
+    # "tree3" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=150, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(200000),
+    # "tree4" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=200, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(200000),
+    # "tree5" : synth.RandomTree(seed_tree=45, seed_sample=42, n_num_features=250, n_cat_features= 0, max_tree_depth=18, first_leaf_level=15).take(200000),
     
-    "make1" : synth.Make(n_samples=10000, n_features=200, n_informative=100, rate = 0.002, seed=45),
-    "make2" : synth.Make(n_samples=50000, n_features=200, n_informative=190, rate = 0.004, seed=45),
-    "make3" : synth.Make(n_samples=100000, n_features=300, n_informative=300, rate = 0.008, seed=45),
-    "make4" : synth.Make(n_samples=100000, n_features=400, n_informative=250, rate = 0.01, seed=45),
-    "make5" : synth.Make(n_samples=100000, n_features=400, n_informative=390, rate = 0.016, seed=45),
+    # "make1" : synth.Make(n_samples=10000, n_features=200, n_informative=100, rate = 0.002, seed=45),
+    # "make2" : synth.Make(n_samples=50000, n_features=200, n_informative=190, rate = 0.004, seed=45),
+    # "make3" : synth.Make(n_samples=100000, n_features=300, n_informative=300, rate = 0.008, seed=45),
+    # "make4" : synth.Make(n_samples=100000, n_features=400, n_informative=250, rate = 0.01, seed=45),
+    # "make5" : synth.Make(n_samples=100000, n_features=400, n_informative=390, rate = 0.016, seed=45),
     # "sine1": synth.AnomalySine(n_samples=10000, n_anomalies=200, replace= False, noise = 0.3, seed = 42),
     # "sine2": synth.AnomalySine(n_samples=10000, n_anomalies=400, replace= False, noise = 0.3, seed = 43),
     # "sine3": synth.AnomalySine(n_samples=10000, n_anomalies=800, replace= False, noise = 0.3, seed = 44),
@@ -118,14 +118,14 @@ PREPROCESSORS = {
 
 
 MODELS = {
-    "DAE": AutoencoderBase,
+    # "DAE": AutoencoderBase,
     "AE": NoDropoutAE,
-    "PW-AE": ProbabilityWeightedAutoencoder,
-    "xStream": xStream,
-    "RRCF": RobustRandomCutForest,
-    "ILOF": ILOF,
-    "HST": HalfSpaceTrees,
-    "LODA": LodaDetector
+    # "PW-AE": ProbabilityWeightedAutoencoder,
+    # "xStream": xStream,
+    # "RRCF": RobustRandomCutForest,
+    # "ILOF": ILOF,
+    # "HST": HalfSpaceTrees,
+    # "LODA": LodaDetector
 }
 
 CONFIGS = {

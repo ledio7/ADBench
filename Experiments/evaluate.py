@@ -13,8 +13,9 @@ from river.feature_extraction import RBFSampler
 import torch
 from streamad.model import LodaDetector
 from time import time
+from pympler import asizeof
 
-from metrics import compute_metrics, compute_rates, calculate_object_size
+from metrics import compute_metrics, compute_rates
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(script_dir))
@@ -72,7 +73,7 @@ def test_then_train(
     dataset,
     model,
     subsample=50000,
-    update_interv=1000,
+    update_interv=5000,
     log_memory=False,
     preprocessor="minmax",
     postprocessor="none",
@@ -91,6 +92,7 @@ def test_then_train(
     if seed:
         seed_everything(seed)
     
+    
     # Get data
     if isinstance(dataset, str):
         if dataset not in DATASETS:
@@ -102,6 +104,7 @@ def test_then_train(
         data = dataset
     
     total_time = 0
+    label = model
 
     # Initialize preprocessor
     try:
@@ -145,14 +148,14 @@ def test_then_train(
             scores.append(score)
             labels.append(y)
         
-        # RAMHours metric
+        # # RAMHours metric
         if (idx % update_interv == 0 or idx == len(data) - 1) and idx !=0:
-
+            # print(idx)
             evaluate_time = time()
             time_increment = evaluate_time - starting_time
             time_increment = time_increment / 3600
 
-            usage = calculate_object_size(model) / (1024 * 1024 * 1024)
+            usage = asizeof.asizeof(model) / (1024 * 1024 * 1024)
             
             RAMhours_increment = usage * time_increment  
             RAMhours += RAMhours_increment
@@ -171,8 +174,8 @@ def test_then_train(
     metrics["RAMHours"] = RAMhours
     metrics["status"] = "Completed"
     metrics.update(func_kwargs)
-
-    return metrics, (f'{model}', dataset, seed, fpr, tpr)
+    
+    return metrics, (label, dataset, seed, fpr, tpr, recall, precision)
 
 
 def aggregate_dataframe(df, variables):

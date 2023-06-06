@@ -2,27 +2,33 @@ import pandas as pd
 import multiprocessing as mp
 import pathlib
 from evaluate import aggregate_dataframe, test_then_train
-from main_plots import create_main_plots, create_curves
+from main_plots_short import create_main_plots, create_curves ##
 from tqdm import tqdm
 import os
 import sys
-# sys.setrecursionlimit(100_000)
+import ast
+import numpy as np
 
 N_PROCESSES = 6
-DATASETS = ["arrhythmia", "satimage-2", "musk" ]
-# DATASETS = ["annthyroid", "arrhythmia", "breastw", "cardio", "letter", "mammography", "mnist", "musk", "optdigits", "pendigits", "speech", "thyroid", "vowels", "wbc"]
-# DATASETS = ["satimage-2", "annthyroid", "cardio", "shuttle"]
+DATASETS = ["satimage-2", "shuttle", "letter", "cardio" ]##
+# DATASETS = [
+#             "covertype","satimage-2", "shuttle", "http", "smtp", "creditcard",
+#             "annthyroid", "arrhythmia", "breastw", "cardio", "letter", 
+#             "mammography", "mnist", "musk", "optdigits", "pendigits", 
+#             "speech", "thyroid", "vowels", "wbc"
+#             ]
+# DATASETS = ["satimage-2", "mammography", "vowels", "optdigits", "pendigits", "wbc"]
 
-# MODELS = ["AE", "DAE", "PW-AE", "RRCF", "HST", "xStream", "ILOF", "LODA"]
+MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream", "ILOF", "LODA", "RRCF"]
 # MODELS = ["AE", "DAE", "PW-AE", "HST", "ILOF", "LODA"] #new one
-MODELS = ["AE", "DAE", "HST"]
-SEEDS = range(42, 47)
+# MODELS = ["RRCF"]
+SEEDS = range(42, 44)##
 
 if len(sys.argv) < 2:
         SUBSAMPLE=600_000
 else: 
-        SUBSAMPLE = sys.argv[1]
-
+        SUBSAMPLE = int(sys.argv[1])
+# print(SUBSAMPLE)
 # SUBSAMPLE = 600_000
 
 
@@ -55,7 +61,6 @@ if __name__ == '__main__':
         for seed in SEEDS
     ]
 
-    # metrics = [run.get()[0] for run in runs]
     with tqdm(total=len(runs), desc="Processing") as pbar:
         metrics = []
         rates = []
@@ -67,26 +72,38 @@ if __name__ == '__main__':
 
     metrics_raw = pd.DataFrame(metrics)
     metrics_agg = aggregate_dataframe(metrics_raw, ["dataset", "model"])
+    column_names = ['model', 'dataset', 'seed', 'fpr', 'tpr', 'recall', 'precision' ]
+    df_rates= pd.DataFrame(rates, columns=column_names)
 
     path = pathlib.Path(__file__).parent.parent.resolve()
 
-    # to_raw = os.path.join('Experiments', 'Results', 'Benchmark_raw.csv')
     path_raw = path.joinpath(os.path.join('Experiments', 'Results', 'Benchmark_raw.csv'))
 
-    # to_aggregate = os.path.join('Experiments', 'Results', 'Benchmark_agg.csv')
     path_agg = path.joinpath(os.path.join('Experiments', 'Results', 'Benchmark_agg.csv'))
+
+    path_rate = path.joinpath(os.path.join('Experiments', 'Results', 'All_Rates.csv'))
 
     metrics_raw.to_csv(path_raw)
     metrics_agg.to_csv(path_agg)
-    
-    #Create roc e pr curve
-    column_names = ['model', 'dataset', 'seed', 'fpr', 'tpr' ]
-    df_rates= pd.DataFrame(rates, columns=column_names)
-    # print(df_rates['tpr'][1])
-    create_curves(df_rates)
+    df_rates.to_csv(path_rate)
 
+    # Create roc e pr curve
+    # # # df_rates = pd.read_csv(path_rate)
+    create_curves(df_rates)
+    
     #Create main heatmaps
     create_main_plots(metrics_agg)
 
     pool.close()
     pool.join()
+
+
+
+
+
+    # path_rate = path.joinpath(os.path.join('Experiments', 'Results', 'Rates_finale.csv'))
+
+    # # df_rates = pd.read_csv(path_rate)
+    # df_rates = pd.read_csv(path_rate, converters={'fpr': parse_array_string, 'tpr': parse_array_string})
+
+    # create_curves(df_rates)

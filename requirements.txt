@@ -10,5 +10,6 @@ tqdm==4.61.2
 streamad==0.3.0
 orange3==3.30
 seaborn
+pympler
 -e ./Utils/river
 -e ./Utils/IncrementalTorch

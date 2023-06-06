@@ -15,7 +15,7 @@ def create_curves(rates):
     # models = set([m for m, d, fpr, tpr, recall, precision, seed in rates])
     # datasets = set([d for m, d, fpr, trp, recall, precision, seed in rates])
     models = rates['model'].unique()
-    # datasets = rates['dataset'].unique()
+    datasets = rates['dataset'].unique()
     seeds = rates['seed'].unique()
 
     # Interpolated curves
@@ -79,7 +79,7 @@ def create_curves(rates):
 
 
     # ROC-Curves
-    datasets = ["covertype", "creditcard", "http", "satimage-2", "shuttle", "smtp"]
+    # datasets = ["covertype", "creditcard", "http", "satimage-2", "shuttle", "smtp"]
     nrows = 2
     ncols = len(datasets) // nrows
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 10))
@@ -140,99 +140,8 @@ def create_curves(rates):
 
 
 
-    datasets = ["annthyroid", "arrhythmia", "breastw", "cardio", "letter", "mammography"]
-    nrows = 2 
-    ncols = len(datasets) // nrows
-    fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 10))
-    for i, dataset in enumerate(datasets):
-        row = i // ncols 
-        col = i % ncols 
-        ax = axs[row, col]
-        for j, model in enumerate(models):
-            tpr_curves = []
-            fpr_curves = []
-            for seed in seeds:
-                filtered_df = rates[(rates['dataset'] == dataset) & (rates['model'] == model) & (rates['seed'] == seed)]
-                tpr = filtered_df['tpr'].values[0]
-                fpr = filtered_df['fpr'].values[0]
-                tpr_curves.append(np.array(tpr))
-                fpr_curves.append(np.array(fpr))
-
-            max_length = max(len(tpr) for tpr in tpr_curves)
-            interp_tpr_curves = []
-            interp_fpr_curves = []
-            for tpr, fpr in zip(tpr_curves, fpr_curves):
-                interp_tpr = np.interp(np.linspace(0, 1, num=max_length), fpr, tpr)
-                interp_tpr_curves.append(interp_tpr)
-                interp_fpr_curves.append(np.linspace(0, 1, num=max_length))
-            mean_curve = np.mean(interp_tpr_curves, axis=0)
-            std_curve = np.std(interp_tpr_curves, axis=0)
-            ax.plot(interp_fpr_curves[0], mean_curve, label=F'{model}')
-            ax.set_xlabel('FPR')
-            ax.set_ylabel('TPR')
-            ax.set_title(f'Mean ROC Curves {dataset}')
-            ax.legend()          
-    fig.tight_layout()
-    # fig.subplots_adjust(top=0.97, bottom=0.055, left=0.045, right=0.97, hspace=0.41, wspace=0.21)
-    fig.savefig(os.path.join(save_dir, f'ROC_Curves2.png'))
-    # plt.show()
-    # plt.close(fig)
-
-
-
-    datasets = ["mnist", "musk", "optdigits", "pendigits", "speech", "thyroid", "vowels", "wbc"]
-    nrows = 2  # Numero di righe
-    ncols = len(datasets) // nrows
-    fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 10))
-    for i, dataset in enumerate(datasets):
-        # # fig, axs = plt.subplots(figsize=(10, 6))
-        # ax = axs[i]
-        row = i // ncols 
-        col = i % ncols  
-        ax = axs[row, col]
-        for j, model in enumerate(models):
-            tpr_curves = []
-            fpr_curves = []
-            for seed in seeds:
-                filtered_df = rates[(rates['dataset'] == dataset) & (rates['model'] == model) & (rates['seed'] == seed)]
-                tpr = filtered_df['tpr'].values[0]
-                fpr = filtered_df['fpr'].values[0]
-                # plt.plot(fpr, tpr, 'b', alpha=0.15)
-                tpr_curves.append(np.array(tpr))
-                fpr_curves.append(np.array(fpr))
-
-            # print(tpr_curves)
-            max_length = max(len(tpr) for tpr in tpr_curves)
-            interp_tpr_curves = []
-            interp_fpr_curves = []
-            for tpr, fpr in zip(tpr_curves, fpr_curves):
-                interp_tpr = np.interp(np.linspace(0, 1, num=max_length), fpr, tpr)
-                interp_tpr_curves.append(interp_tpr)
-                interp_fpr_curves.append(np.linspace(0, 1, num=max_length))
-            mean_curve = np.mean(interp_tpr_curves, axis=0)
-            std_curve = np.std(interp_tpr_curves, axis=0)
-            ax.plot(interp_fpr_curves[0], mean_curve, label=F'{model}')
-            ax.set_xlabel('FPR')
-            ax.set_ylabel('TPR')
-            ax.set_title(f'Mean ROC Curves {dataset}')
-            ax.legend()          
-    fig.tight_layout()
-    # fig.subplots_adjust(top=0.97, bottom=0.055, left=0.045, right=0.97, hspace=0.41, wspace=0.21)
-    fig.savefig(os.path.join(save_dir, f'ROC_Curves3.png'))
-    # plt.show()
-    # plt.close(fig)
-
-
-
-
-
-
-
-
-
-
     # PR - CURVES
-    datasets = ["covertype", "creditcard", "http", "satimage-2", "shuttle", "smtp"]
+    # datasets = ["covertype", "creditcard", "http", "satimage-2", "shuttle", "smtp"]
     nrows = 2
     ncols = len(datasets) // nrows
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 10))
@@ -292,93 +201,6 @@ def create_curves(rates):
     # # plt.show()
     # # plt.close(fig)
 
-
-
-    datasets = ["annthyroid", "arrhythmia", "breastw", "cardio", "letter", "mammography"]
-    nrows = 2  
-    ncols = len(datasets) // nrows
-    fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 10))
-    for i, dataset in enumerate(datasets):
-        # # fig, axs = plt.subplots(figsize=(10, 6))
-        # ax = axs[i]
-        row = i // ncols 
-        col = i % ncols  
-        ax = axs[row, col]
-        for j, model in enumerate(models):
-            precision_curves = []
-            recall_curves = []
-            for seed in seeds:
-                filtered_df = rates[(rates['dataset'] == dataset) & (rates['model'] == model) & (rates['seed'] == seed)]
-                precision = filtered_df['precision'].values[0]
-                recall = filtered_df['recall'].values[0]
-                # plt.plot(recall, precision, 'b', alpha=0.15)
-                precision_curves.append(np.sort(np.array(precision)))
-                recall_curves.append(np.sort(np.array(recall))[::-1])
-
-            # print(precision_curves)
-            max_length = max(len(precision) for precision in precision_curves)
-            interp_precision_curves = []
-            interp_recall_curves = []
-            for precision, recall in zip(precision_curves, recall_curves):
-                interp_precision = np.interp(np.linspace(0, 1, num=max_length), recall[::-1], precision[::-1])
-                interp_precision_curves.append(interp_precision)
-                interp_recall_curves.append(np.linspace(0, 1, num=max_length))
-            mean_curve = np.mean(interp_precision_curves, axis=0)
-            std_curve = np.std(interp_precision_curves, axis=0)
-            ax.plot(interp_recall_curves[0], mean_curve, label=F'{model}')
-            ax.set_xlabel('Recall')
-            ax.set_ylabel('Precision')
-            ax.set_title(f'Mean PR Curves {dataset}')
-            ax.legend()          
-    fig.tight_layout()
-    # fig.subplots_adjust(top=0.97, bottom=0.055, left=0.045, right=0.97, hspace=0.41, wspace=0.21)
-    fig.savefig(os.path.join(save_dir, f'PR_Curves2.png'))
-    # plt.show()
-    # plt.close(fig)
-
-
-
-    datasets = ["mnist", "musk", "optdigits", "pendigits", "speech", "thyroid", "vowels", "wbc"]
-    nrows = 2
-    ncols = len(datasets) // nrows
-    fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(15, 10))
-    for i, dataset in enumerate(datasets):
-        # # fig, axs = plt.subplots(figsize=(10, 6))
-        # ax = axs[i]
-        row = i // ncols  
-        col = i % ncols 
-        ax = axs[row, col]
-        for j, model in enumerate(models):
-            precision_curves = []
-            recall_curves = []
-            for seed in seeds:
-                filtered_df = rates[(rates['dataset'] == dataset) & (rates['model'] == model) & (rates['seed'] == seed)]
-                precision = filtered_df['precision'].values[0]
-                recall = filtered_df['recall'].values[0]
-                # plt.plot(recall, precision, 'b', alpha=0.15)
-                precision_curves.append(np.sort(np.array(precision)))
-                recall_curves.append(np.sort(np.array(recall))[::-1])
-
-            # print(precision_curves)
-            max_length = max(len(precision) for precision in precision_curves)
-            interp_precision_curves = []
-            interp_recall_curves = []
-            for precision, recall in zip(precision_curves, recall_curves):
-                interp_precision = np.interp(np.linspace(0, 1, num=max_length), recall[::-1], precision[::-1])
-                interp_precision_curves.append(interp_precision)
-                interp_recall_curves.append(np.linspace(0, 1, num=max_length))
-            mean_curve = np.mean(interp_precision_curves, axis=0)
-            std_curve = np.std(interp_precision_curves, axis=0)
-            ax.plot(interp_recall_curves[0], mean_curve, label=F'{model}')
-            ax.set_xlabel('Recall')
-            ax.set_ylabel('TPR')
-            ax.set_title(f'Mean PR Curves {dataset}')
-            ax.legend()          
-    fig.tight_layout()
-    # fig.subplots_adjust(top=0.97, bottom=0.055, left=0.045, right=0.97, hspace=0.41, wspace=0.21)
-    fig.savefig(os.path.join(save_dir, f'PR_Curves3.png'))
-    # plt.show()
-    # plt.close(fig)
 
 
 
