@@ -28,11 +28,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(script_dir))
 
 N_PROCESSES = 5
-SEEDS = range(42, 47)
-
-
-path = pathlib.Path(__file__).parent.parent.resolve()
-final_path  = path.joinpath(os.path.join('Synthetic', 'Data_gen'))
+SEEDS = range(42, 44)
 
 
 DATASETS = {
@@ -48,11 +44,11 @@ DATASETS = {
     # "agra9" : synth.Agrawal(classification_function=9, seed=50, balance_classes=True, perturbation = 0.1 ).take(200000),   
     # "agra10" : synth.Agrawal(classification_function=9, seed=51, balance_classes=True, perturbation = 0.2 ).take(200000),    
 
-    "sine1": synth.AnomalySine(n_samples=10000, n_anomalies=100, replace= False, noise = 0.1, seed = 43),
-    "sine2": synth.AnomalySine(n_samples=50000, n_anomalies=200, replace= False, noise = 0.1, seed = 43),
+    # "sine1": synth.AnomalySine(n_samples=10000, n_anomalies=100, replace= False, noise = 0.1, seed = 43),
+    # "sine2": synth.AnomalySine(n_samples=50000, n_anomalies=200, replace= False, noise = 0.1, seed = 43),
     # "sine3": synth.AnomalySine(n_samples=100000, n_anomalies=800, replace= False, noise = 0.1, seed = 43),
     # "sine4": synth.AnomalySine(n_samples=100000, n_anomalies=1200, replace= False, noise = 0.1, seed = 43),
-    # "sine5": synth.AnomalySine(n_samples=100000, n_anomalies=1800, replace= False, noise = 0.1, seed = 43),
+    "sine5": synth.AnomalySine(n_samples=100000, n_anomalies=1800, replace= False, noise = 0.1, seed = 43),
 
     # "hyper1" : synth.Hyperplane(seed=46, n_features=50, noise_percentage = 0.1).take(10000), 
     # "hyper2" : synth.Hyperplane(seed=46, n_features=100, noise_percentage = 0.1).take(50000), 
@@ -182,7 +178,7 @@ def test_then_train(
     anomalies = 0
     samples = 0
     start = time()
-    for x, y in stream.iter_csv(os.path.join(final_path, f'{dataset_name}.csv'), target= 'y', converters= converters):
+    for x, y in stream.iter_csv(os.path.join('Data_gen', f'{dataset_name}.csv'), target= 'y', converters= converters):
         samples +=1
         if y ==1:
             anomalies +=1
@@ -243,17 +239,13 @@ if __name__ == '__main__':
     mp.freeze_support()
 
     # Initialize datasets
-    path = pathlib.Path(__file__).parent.parent.resolve()
-    csv_file = path.joinpath(os.path.join('Synthetic', 'Data_gen'))
-
     for dataset_name, dataset in DATASETS.items():
-        if not os.path.isfile(os.path.join(csv_file, f'{dataset_name}.csv')):
+        if not os.path.isfile(os.path.join('Data_gen', f'{dataset_name}.csv')):
             print("Creating dataset")
             data = list(DATASETS[dataset_name])
             handle_dataset(dataset_name, data)
         else:
             print("Using existing dataset")
-
            
     # Execution
     pool = mp.Pool(processes=N_PROCESSES)
@@ -285,12 +277,10 @@ if __name__ == '__main__':
 
     metrics_raw = pd.DataFrame(metrics)
     metrics_agg = aggregate_dataframe(metrics_raw, ["dataset", "model"])
-
-    path = pathlib.Path(__file__).parent.parent.resolve()
-
-    path_raw = path.joinpath(os.path.join('Synthetic', 'Benchmark_raw.csv'))
-
-    path_agg = path.joinpath(os.path.join('Synthetic', 'Benchmark_agg.csv'))
+    
+    path_raw = os.path.join('Benchmark_raw.csv')
+    
+    path_agg = os.path.join('Benchmark_agg.csv')
 
     metrics_raw.to_csv(path_raw)
     metrics_agg.to_csv(path_agg)

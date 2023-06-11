@@ -4,15 +4,11 @@ from river import stream
 import os
 import random
 
-path = pathlib.Path(__file__).parent.parent.resolve()
-final_path  = path.joinpath(os.path.join('Synthetic', 'Data_gen'))
-
 cols ={
     "hyper1": 50, "hyper2":100, "hyper3":200, "hyper4":300, "hyper5":400, 
     "tree1":50, "tree2":100, "tree3":150, "tree4":200, "tree5":250,
     "make1":200, "make2":200, "make3":300, "make4":400, "make5":400
 }
-
 
 
 def handle_dataset(name, data):
@@ -36,7 +32,7 @@ def handle_dataset(name, data):
     # df = df.sample(frac=1)
     # print(df)
     print(anomalies)
-    df.to_csv(os.path.join(final_path, f'{name}.csv'), index=False)
+    df.to_csv(os.path.join('Data_gen', f'{name}.csv'), index=False)
     
 
 def get_converters(name):

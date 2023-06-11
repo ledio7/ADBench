@@ -2,7 +2,7 @@ import pandas as pd
 import multiprocessing as mp
 import pathlib
 from evaluate import aggregate_dataframe, test_then_train
-from main_plots_short import create_main_plots, create_curves ##
+from main_plots import create_main_plots, create_curves 
 from tqdm import tqdm
 import os
 import sys
@@ -10,7 +10,7 @@ import ast
 import numpy as np
 
 N_PROCESSES = 6
-DATASETS = ["satimage-2", "shuttle", "letter", "cardio" ]##
+DATASETS = ["satimage-2"]
 # DATASETS = [
 #             "covertype","satimage-2", "shuttle", "http", "smtp", "creditcard",
 #             "annthyroid", "arrhythmia", "breastw", "cardio", "letter", 
@@ -19,10 +19,10 @@ DATASETS = ["satimage-2", "shuttle", "letter", "cardio" ]##
 #             ]
 # DATASETS = ["satimage-2", "mammography", "vowels", "optdigits", "pendigits", "wbc"]
 
-MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream", "ILOF", "LODA", "RRCF"]
+# MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream", "ILOF", "LODA", "RRCF"]
 # MODELS = ["AE", "DAE", "PW-AE", "HST", "ILOF", "LODA"] #new one
-# MODELS = ["RRCF"]
-SEEDS = range(42, 44)##
+MODELS = ["AE"]
+SEEDS = range(42, 47)
 
 if len(sys.argv) < 2:
         SUBSAMPLE=600_000
@@ -75,24 +75,24 @@ if __name__ == '__main__':
     column_names = ['model', 'dataset', 'seed', 'fpr', 'tpr', 'recall', 'precision' ]
     df_rates= pd.DataFrame(rates, columns=column_names)
 
-    path = pathlib.Path(__file__).parent.parent.resolve()
+    # path = pathlib.Path(__file__).parent.parent.resolve()
 
-    path_raw = path.joinpath(os.path.join('Experiments', 'Results', 'Benchmark_raw.csv'))
+    path_raw = os.path.join('Results', 'Benchmark_raw.csv')
 
-    path_agg = path.joinpath(os.path.join('Experiments', 'Results', 'Benchmark_agg.csv'))
+    path_agg = os.path.join('Results', 'Benchmark_agg.csv')
 
-    path_rate = path.joinpath(os.path.join('Experiments', 'Results', 'All_Rates.csv'))
+    path_rate = os.path.join('Results', 'All_Rates.csv')
 
     metrics_raw.to_csv(path_raw)
     metrics_agg.to_csv(path_agg)
-    df_rates.to_csv(path_rate)
+    # df_rates.to_csv(path_rate)
 
     # Create roc e pr curve
     # # # df_rates = pd.read_csv(path_rate)
-    create_curves(df_rates)
+    # create_curves(df_rates)
     
     #Create main heatmaps
-    create_main_plots(metrics_agg)
+    # create_main_plots(metrics_agg)
 
     pool.close()
     pool.join()
