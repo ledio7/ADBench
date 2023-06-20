@@ -14,7 +14,6 @@ import torch
 from streamad.model import LodaDetector
 from time import time
 from pympler import asizeof
-
 from metrics import compute_metrics, compute_rates
 
 script_dir = os.path.dirname(os.path.abspath(__file__))

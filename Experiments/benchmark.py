@@ -10,18 +10,20 @@ import ast
 import numpy as np
 
 N_PROCESSES = 6
-DATASETS = ["satimage-2"]
-# DATASETS = [
-#             "covertype","satimage-2", "shuttle", "http", "smtp", "creditcard",
-#             "annthyroid", "arrhythmia", "breastw", "cardio", "letter", 
-#             "mammography", "mnist", "musk", "optdigits", "pendigits", 
-#             "speech", "thyroid", "vowels", "wbc"
-#             ]
+# DATASETS = ["covertype","satimage-2", "shuttle","mammography", "thyroid", "creditcard"]
+DATASETS = [
+            "covertype","satimage-2", "shuttle", "http", "smtp", "creditcard",
+            "annthyroid", "arrhythmia", "breastw", "cardio", "letter", 
+            "mammography", "mnist", "musk", "optdigits", "pendigits", 
+            "speech", "thyroid", "vowels", "wbc"
+            ]
 # DATASETS = ["satimage-2", "mammography", "vowels", "optdigits", "pendigits", "wbc"]
+# DATASETS = ["wbc"]
+
 
 # MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream", "ILOF", "LODA", "RRCF"]
 # MODELS = ["AE", "DAE", "PW-AE", "HST", "ILOF", "LODA"] #new one
-MODELS = ["AE"]
+MODELS = ["AE", "DAE", "PW-AE"]
 SEEDS = range(42, 47)
 
 if len(sys.argv) < 2:
@@ -75,35 +77,22 @@ if __name__ == '__main__':
     column_names = ['model', 'dataset', 'seed', 'fpr', 'tpr', 'recall', 'precision' ]
     df_rates= pd.DataFrame(rates, columns=column_names)
 
-    # path = pathlib.Path(__file__).parent.parent.resolve()
-
     path_raw = os.path.join('Results', 'Benchmark_raw.csv')
 
     path_agg = os.path.join('Results', 'Benchmark_agg.csv')
 
-    path_rate = os.path.join('Results', 'All_Rates.csv')
+    path_rate = os.path.join('Results', 'Rates_temp.csv')
 
     metrics_raw.to_csv(path_raw)
     metrics_agg.to_csv(path_agg)
-    # df_rates.to_csv(path_rate)
+    df_rates.to_csv(path_rate)
 
     # Create roc e pr curve
-    # # # df_rates = pd.read_csv(path_rate)
-    # create_curves(df_rates)
+    # # df_rates = pd.read_csv(path_rate)
+    create_curves(df_rates)
     
     #Create main heatmaps
-    # create_main_plots(metrics_agg)
+    create_main_plots(metrics_agg)
 
     pool.close()
     pool.join()
-
-
-
-
-
-    # path_rate = path.joinpath(os.path.join('Experiments', 'Results', 'Rates_finale.csv'))
-
-    # # df_rates = pd.read_csv(path_rate)
-    # df_rates = pd.read_csv(path_rate, converters={'fpr': parse_array_string, 'tpr': parse_array_string})
-
-    # create_curves(df_rates)
