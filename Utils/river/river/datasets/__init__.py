@@ -24,6 +24,7 @@ from .speech import Speech
 from .thyroid import Thyroid
 from .vowels import Vowels
 from .wbc import Wbc
+from .rse import RSE
 
 __all__ = [
     "Annthyroid",
@@ -44,4 +45,5 @@ __all__ = [
     "Thyroid",
     "Vowels",
     "Wbc",
+    "RSE",
 ]

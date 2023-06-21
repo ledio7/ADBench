@@ -12,26 +12,23 @@ import csv
 import ast
 
 
-path_rate = os.path.join('Results', 'temp.csv')
+path_rate = os.path.join('Results', 'Rates_temp.csv')
 
-df = pd.read_csv(path_rate, quotechar='"')
+df = pd.read_csv(path_rate)
+column_names = ['model', 'dataset', 'seed', 'fpr', 'tpr', 'recall', 'precision' ]
+print(column_names[3:])
+df['recall'] = df['recall'].str.strip('[]').str.split()
+df['precision'] = df['precision'].str.strip('[]').str.split()
+df['tpr'] = df['tpr'].str.strip('[]').str.split()
+df['fpr'] = df['fpr'].str.strip('[]').str.split()
 
-# Apply ast.literal_eval to the 'fpr' column
-df['fpr'] = df['fpr'].apply(ast.literal_eval)
-df['tpr'] = df['tpr'].apply(ast.literal_eval)
-df['recall'] = df['recall'].apply(ast.literal_eval)
-df['precision'] = df['precision'].apply(ast.literal_eval)
-# df['fpr'] = df['fpr'].apply(lambda x: [float(val) for val in x.strip('[]').split()])
-# df['tpr'] = df['tpr'].apply(lambda x: [float(val) for val in x.strip('[]').split()])
-# df['recall'] = df['recall'].apply(lambda x: [float(val) for val in x.strip('[]').split()])
-# df['precision'] = df['precision'].apply(lambda x: [float(val) for val in x.strip('[]').split()])
-
-# df['fpr'] = df['fpr'].apply(ast.literal_eval).astype(float)
-# df['tpr'] = df['tpr'].apply(ast.literal_eval).astype(float)
-# df['recall'] = df['recall'].apply(ast.literal_eval).astype(float)
-# df['precision'] = df['precision'].apply(ast.literal_eval).astype(float)
-
-
+df['recall'] = df['recall'].apply(lambda x: np.array(x, dtype=float))
+df['precision'] = df['precision'].apply(lambda x: np.array(x, dtype=float))
+df['tpr'] = df['tpr'].apply(lambda x: np.array(x, dtype=float))
+df['fpr'] = df['fpr'].apply(lambda x: np.array(x, dtype=float))
+# pd.set_option('display.width', None)
+# data = df.iloc[1, 3]
+# print(data)
 # df= pd.read_csv(path_rate, index_col=0)
 # df = df.drop(df.columns[0], axis=1)
 
@@ -43,4 +40,4 @@ df['precision'] = df['precision'].apply(ast.literal_eval)
 # create_curves(df)
 # print(df_rates.head())  # Print the first few rows of the DataFrame
 # print(df.info())
-print(df.dtypes)
+# print(df.dtypes)

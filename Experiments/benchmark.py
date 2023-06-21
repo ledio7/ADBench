@@ -9,30 +9,27 @@ import sys
 import ast
 import numpy as np
 
-N_PROCESSES = 6
+N_PROCESSES = 15
 # DATASETS = ["covertype","satimage-2", "shuttle","mammography", "thyroid", "creditcard"]
-DATASETS = [
-            "covertype","satimage-2", "shuttle", "http", "smtp", "creditcard",
-            "annthyroid", "arrhythmia", "breastw", "cardio", "letter", 
-            "mammography", "mnist", "musk", "optdigits", "pendigits", 
-            "speech", "thyroid", "vowels", "wbc"
-            ]
+# DATASETS = [
+#             "covertype","satimage-2", "shuttle", "http", "smtp", "creditcard",
+#             "annthyroid", "arrhythmia", "breastw", "cardio", "letter", 
+#             "mammography", "mnist", "musk", "optdigits", "pendigits", 
+#             "speech", "thyroid", "vowels", "wbc"
+#             ]
 # DATASETS = ["satimage-2", "mammography", "vowels", "optdigits", "pendigits", "wbc"]
-# DATASETS = ["wbc"]
+DATASETS = ["rse"]
 
 
-# MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream", "ILOF", "LODA", "RRCF"]
+MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream", "ILOF", "LODA", "RRCF"]
 # MODELS = ["AE", "DAE", "PW-AE", "HST", "ILOF", "LODA"] #new one
-MODELS = ["AE", "DAE", "PW-AE"]
+# MODELS = ["AE"]
 SEEDS = range(42, 47)
 
 if len(sys.argv) < 2:
         SUBSAMPLE=600_000
 else: 
         SUBSAMPLE = int(sys.argv[1])
-# print(SUBSAMPLE)
-# SUBSAMPLE = 600_000
-
 
 CONFIGS = {
     "AE": {"lr": 0.02, "latent_dim": 0.1},
@@ -74,24 +71,28 @@ if __name__ == '__main__':
 
     metrics_raw = pd.DataFrame(metrics)
     metrics_agg = aggregate_dataframe(metrics_raw, ["dataset", "model"])
-    column_names = ['model', 'dataset', 'seed', 'fpr', 'tpr', 'recall', 'precision' ]
+    column_names = ['model', 'dataset', 'seed', 'fpr', 'tpr', 'recall', 'precision']
     df_rates= pd.DataFrame(rates, columns=column_names)
 
     path_raw = os.path.join('Results', 'Benchmark_raw.csv')
-
     path_agg = os.path.join('Results', 'Benchmark_agg.csv')
-
-    path_rate = os.path.join('Results', 'Rates_temp.csv')
+    path_rate = os.path.join('Results', 'Rates.csv')
 
     metrics_raw.to_csv(path_raw)
     metrics_agg.to_csv(path_agg)
-    df_rates.to_csv(path_rate)
+    np.set_printoptions(threshold=np.inf)
+    df_rates.to_csv(path_rate, index=False)
 
-    # Create roc e pr curve
-    # # df_rates = pd.read_csv(path_rate)
+    # Create roc e pr curves
+    df_rates = pd.read_csv(path_rate)
+    for metric in column_names[3:]:
+        df_rates[metric] = df_rates[metric].str.strip('[]').str.split()
+        df_rates[metric] = df_rates[metric].apply(lambda x: np.array(x, dtype=float))
+
+    # Create pr and roc curves
     create_curves(df_rates)
     
-    #Create main heatmaps
+    # Create main heatmaps
     create_main_plots(metrics_agg)
 
     pool.close()

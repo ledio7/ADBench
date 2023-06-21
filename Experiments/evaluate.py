@@ -15,6 +15,7 @@ from streamad.model import LodaDetector
 from time import time
 from pympler import asizeof
 from metrics import compute_metrics, compute_rates
+import pandas as pd
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(script_dir))
@@ -41,6 +42,7 @@ DATASETS = {
     "wbc": Wbc,
     "breastw": Breastw,
     "arrhythmia": Arrhythmia,
+    "rse": RSE,
 }
 
 PREPROCESSORS = {
@@ -67,6 +69,7 @@ MODELS = {
     "LODA": LodaDetector
 }
 
+path_scores = os.path.join('Results', 'Scores_rse')
 
 def test_then_train(
     dataset,
@@ -103,7 +106,7 @@ def test_then_train(
         data = dataset
     
     total_time = 0
-    label = model
+    label = model #saving model's name
 
     # Initialize preprocessor
     try:
@@ -123,6 +126,7 @@ def test_then_train(
             warnings.warn(f"Model '{model}' could not be found.")
 
     scores, labels = [], []
+    df_scores = pd.DataFrame(columns=["Score", "Label"])
     start = time()
     starting_time=time()
     RAMhours = 0
@@ -146,7 +150,9 @@ def test_then_train(
             # Add results
             scores.append(score)
             labels.append(y)
-        
+
+        df_scores = df_scores.append({'Score': score, 'Label': y}, ignore_index=True)
+
         # # RAMHours metric
         if (idx % update_interv == 0 or idx == len(data) - 1) and idx !=0:
             # print(idx)
@@ -162,6 +168,7 @@ def test_then_train(
             starting_time = time()   
 
     
+    df_scores.to_csv(os.path.join(path_scores, f'{label}_{seed}.csv'), index=False)
     # Compute final metric scores
     total_time += time() - start
 
