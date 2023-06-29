@@ -108,16 +108,16 @@ def adjust_heatmaps(df): # Ordering
     annot_font_props = {'size': 10}
 
     ## Outlier percentage order
-    sorted_outliers_percentage = {k: v for k, v in sorted(outliers_percentage.items(), key=lambda item: item[1], reverse=False)}
-    desired_order = list(sorted_outliers_percentage.keys())
+    # sorted_outliers_percentage = {k: v for k, v in sorted(outliers_percentage.items(), key=lambda item: item[1], reverse=False)}
+    # desired_order = list(sorted_outliers_percentage.keys())
 
     ## Features number order
     # sorted_features_number = {k: v for k, v in sorted(features_number.items(), key=lambda item: item[1], reverse=False)}
     # desired_order = list(sorted_features_number.keys())
 
     # Samples order
-    # sorted_samples = {k: v for k, v in sorted(samples.items(), key=lambda item: item[1], reverse=False)}
-    # desired_order = list(sorted_samples.keys())
+    sorted_samples = {k: v for k, v in sorted(samples.items(), key=lambda item: item[1], reverse=False)}
+    desired_order = list(sorted_samples.keys())
     
     df['dataset'] = pd.Categorical(df['dataset'], categories=desired_order, ordered=True)
     metrics = ['PR-AUC', 'ROC-AUC', 'F1_1', '']
@@ -130,7 +130,7 @@ def adjust_heatmaps(df): # Ordering
                 
             sns.heatmap(heatmap_data, linewidths=0.5, annot=True, cmap='RdYlGn', cbar=False, ax=axs[i], annot_kws = annot_font_props, vmin=0.0, vmax=1.0)
                 
-            axs[i].set_title(f'{metric} (ordered by outlier percentage)')
+            axs[i].set_title(f'{metric} (ordered by #samples)')
             # axs[i].set_xlabel('Modello')
             if i ==1:
                 axs[i].set_xlabel('Models')
@@ -148,7 +148,7 @@ def adjust_heatmaps(df): # Ordering
     plt.subplots_adjust(wspace=10)    
     plt.tight_layout()
     save_dir = os.path.join('Results', 'Main_Plots')
-    plt.savefig(os.path.join(save_dir, f'Heatmap_Outlier.png'), dpi=200)
+    plt.savefig(os.path.join(save_dir, f'Heatmap_Samples.png'), dpi=200)
     
 
 
@@ -248,7 +248,7 @@ def adjust_heatmaps(df): # Ordering
 
 
 
-csv_file = os.path.join("Results", "Benchmark_agg_final.csv")
+csv_file = os.path.join("Results", "Benchmark_agg.csv")
 
 if os.path.isfile(csv_file):
     df = pd.read_csv(csv_file)

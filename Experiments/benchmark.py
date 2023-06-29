@@ -9,16 +9,15 @@ import sys
 import ast
 import numpy as np
 
-N_PROCESSES = 15
+N_PROCESSES = 7
 # DATASETS = ["covertype","satimage-2", "shuttle","mammography", "thyroid", "creditcard"]
-# DATASETS = [
-#             "covertype","satimage-2", "shuttle", "http", "smtp", "creditcard",
-#             "annthyroid", "arrhythmia", "breastw", "cardio", "letter", 
-#             "mammography", "mnist", "musk", "optdigits", "pendigits", 
-#             "speech", "thyroid", "vowels", "wbc"
-#             ]
+DATASETS = [
+            "covertype","satimage-2", "shuttle", "http", "smtp", "creditcard",
+            "annthyroid", "arrhythmia", "breastw", "cardio", "letter", 
+            "mammography", "mnist", "musk", "optdigits", "pendigits", 
+            "speech", "thyroid", "vowels", "wbc"
+            ]
 # DATASETS = ["satimage-2", "mammography", "vowels", "optdigits", "pendigits", "wbc"]
-DATASETS = ["rse"]
 
 
 MODELS = ["AE", "DAE", "PW-AE", "HST", "xStream", "ILOF", "LODA", "RRCF"]
@@ -83,7 +82,6 @@ if __name__ == '__main__':
     np.set_printoptions(threshold=np.inf)
     df_rates.to_csv(path_rate, index=False)
 
-    # Create roc e pr curves
     df_rates = pd.read_csv(path_rate)
     for metric in column_names[3:]:
         df_rates[metric] = df_rates[metric].str.strip('[]').str.split()
