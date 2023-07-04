@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
-METRICS = ["PR-AUC", "ROC-AUC", "F1_0", "F1_1", "Recall_0", "Recall_1", "Geo-Mean", "runtime"]
+METRICS = ["PR-AUC", "ROC-AUC", "F1_0", "F1_1", "Recall_0", "Recall_1", "Geo-Mean"]
 
 def test(df):
     if len(sys.argv) < 2:

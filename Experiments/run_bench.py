@@ -1,7 +1,7 @@
 import pandas as pd
 import multiprocessing as mp
 import pathlib
-from evaluate import aggregate_dataframe, test_then_train
+from evaluation import aggregate_dataframe, test_then_train
 from main_plots import create_main_plots, create_curves 
 from tqdm import tqdm
 import os

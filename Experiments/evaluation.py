@@ -126,7 +126,7 @@ def test_then_train(
             warnings.warn(f"Model '{model}' could not be found.")
 
     scores, labels = [], []
-    df_scores = pd.DataFrame(columns=["Score", "Label"])
+    # df_scores = pd.DataFrame(columns=["Score", "Label"])
     start = time()
     starting_time=time()
     RAMhours = 0
@@ -151,7 +151,7 @@ def test_then_train(
             scores.append(score)
             labels.append(y)
 
-        df_scores = df_scores.append({'Score': score, 'Label': y}, ignore_index=True)
+        # df_scores = df_scores.append({'Score': score, 'Label': y}, ignore_index=True)
 
         # # RAMHours metric
         if (idx % update_interv == 0 or idx == len(data) - 1) and idx !=0:
@@ -168,7 +168,7 @@ def test_then_train(
             starting_time = time()   
 
     
-    df_scores.to_csv(os.path.join(path_scores, f'{label}_{seed}.csv'), index=False)
+    # df_scores.to_csv(os.path.join(path_scores, f'{label}_{seed}.csv'), index=False)
     # Compute final metric scores
     total_time += time() - start
 

@@ -48,24 +48,18 @@ def create_curves(rates):
     models = rates['model'].unique()
     seeds = rates['seed'].unique()
 
-    number_of_datasets = len(rates['dataset'].unique())
-    if number_of_datasets > 1:
-        datasets = [
+    datasets = [
             ["covertype", "creditcard", "http", "satimage-2", "shuttle", "smtp"],
             ["annthyroid", "arrhythmia", "breastw", "cardio", "letter", "mammography"],
             ["mnist", "musk", "optdigits", "pendigits", "speech", "thyroid", "vowels", "wbc"]
         ]
         
-        filenames = ['Main', '2', '3']
+    filenames = ['Main', '2', '3']
         
-        for dataset, filename in zip(datasets, filenames):
-            create_pr(rates, models, seeds, dataset, filename)
-            create_roc(rates, models, seeds, dataset, filename)
-    else:
-        dataset = ["rse"]
-        filename = "rse"
-        create_pr(rates, models, seeds, dataset, filename, nrows=1)
-        create_roc(rates, models, seeds, dataset, filename, nrows=1)
+    for dataset, filename in zip(datasets, filenames):
+        create_pr(rates, models, seeds, dataset, filename)
+        create_roc(rates, models, seeds, dataset, filename)
+
 
 
 def create_roc(rates, models, seeds, datasets, filename, nrows = 2):
