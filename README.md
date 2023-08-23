@@ -70,3 +70,8 @@ There is also an additional folder called _Synthetic_ which shows the results an
 `python run_bench.py`
 
 This experiment is way heavier than the previous one on real dataset because it has larger (synthetic) datasets.
+
+
+### Credits
+
+https://github.com/lucasczz/DAADS for the code implementation of the algorithms used in this project.
